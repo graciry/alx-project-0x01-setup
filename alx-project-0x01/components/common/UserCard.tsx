@@ -1,14 +1,18 @@
+// components/common/UserCard.tsx
 import { UserProps } from "@/interfaces";
 
-const UserCard: React.FC<UserProps> = ({ name, email, phone, website, company, address }) => {
+interface Props {
+  user: UserProps;
+}
+
+const UserCard: React.FC<Props> = ({ user }) => {
   return (
-    <div className="max-w-xl mx-auto my-6 p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300">
-      <h2 className="text-2xl font-semibold text-blue-700">{name}</h2>
-      <p className="text-gray-600">📧 {email}</p>
-      <p className="text-gray-600">📞 {phone}</p>
-      <p className="text-gray-600">🌐 {website}</p>
-      <p className="mt-2 text-sm text-gray-500">🏢 {company.name} — {company.catchPhrase}</p>
-      <p className="text-sm text-gray-500">📍 {address.suite}, {address.street}, {address.city}</p>
+    <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+      <h2 className="text-xl font-bold mb-2 text-blue-700">{user.name}</h2>
+      <p className="text-sm text-gray-600">@{user.username}</p>
+      <p className="text-gray-800 mt-2">{user.email}</p>
+      <p className="text-gray-600 text-sm mt-1">Company: {user.company.name}</p>
+      <p className="text-gray-500 text-xs mt-2">City: {user.address.city}</p>
     </div>
   );
 };

@@ -7,6 +7,7 @@ export interface PostProps {
   body: string;
 }
 
+// interfaces/index.ts
 export interface UserProps {
   id: number;
   name: string;
