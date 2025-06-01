@@ -4,15 +4,13 @@ import Header from "@/components/layout/Header";
 import { PostData, PostProps } from "@/interfaces";
 import { useState } from "react";
 
-interface PostsProps {
-  posts: PostProps[];
-}
-
-const Posts: React.FC<PostsProps> = ({ posts }) => {
+const Posts: React.FC<{ posts: PostProps[] }> = ({ posts }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [postList, setPostList] = useState<PostProps[]>(posts);
+  const [post, setPost] = useState<PostData | null>(null); // Added this line
 
   const handleAddPost = (newPost: PostData) => {
+    setPost(newPost);  // Save the latest post here (optional, if you want to keep track)
     setPostList([...postList, { ...newPost, id: postList.length + 1 }]);
   };
 
@@ -29,7 +27,7 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
             Add Post
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-2 mt-4">
+        <div className="grid grid-cols-3 gap-2">
           {postList.map(({ title, body, userId, id }: PostProps, key: number) => (
             <PostCard title={title} body={body} userId={userId} id={id} key={key} />
           ))}
