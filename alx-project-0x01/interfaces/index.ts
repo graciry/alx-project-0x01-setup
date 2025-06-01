@@ -95,12 +95,8 @@ export interface UserData {
   };
 }
 
-export interface UserModalProps {
-  onClose: () => void;
-  onSubmit: (user: UserData) => void;
-}
 export interface UserData {
-  id: number;
+  id?: number;
   name: string;
   username: string;
   email: string;
@@ -123,8 +119,9 @@ export interface UserData {
   };
 }
 
+// Props for UserModal or any component that takes onSubmit handler
 export interface UserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (user: UserData) => void; // ✅ Add this line
+  onSubmit: (post: UserProps) => void;
 }
