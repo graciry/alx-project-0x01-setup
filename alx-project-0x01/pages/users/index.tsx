@@ -1,70 +1,55 @@
-// pages/users/index.tsx
+import { useState } from 'react';
+import { UserData } from '@/interfaces';
+import UserCard from '@/components/common/UserCard';
+import UserModal from '@/components/common/UserModal';
 
-import { useState } from "react";
-import UserCard from "@/components/UserCard";
-import UserModal from "@/components/common/UserModal";
-import { UserData, UserProps } from "@/interfaces";
+const UsersPage = () => {
+  const [users, setUsers] = useState<UserData[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-const initialUsers: UserProps[] = [
-  {
-    id: 1,
-    name: "Leanne Graham",
-    username: "Bret",
-    email: "Sincere@april.biz",
-    address: {
-      street: "Kulas Light",
-      suite: "Apt. 556",
-      city: "Gwenborough",
-      zipcode: "92998-3874",
-      geo: {
-        lat: "-37.3159",
-        lng: "81.1496"
-      }
-    },
-    phone: "1-770-736-8031 x56442",
-    website: "hildegard.org",
-    company: {
-      name: "Romaguera-Crona",
-      catchPhrase: "Multi-layered client-server neural-net",
-      bs: "harness real-time e-markets"
-    }
-  }
-];
-
-export default function UsersPage() {
-  const [users, setUsers] = useState<UserProps[]>(initialUsers);
-  const [showModal, setShowModal] = useState(false);
-
-  const handleAddUser = (newUser: UserData) => {
-    const userWithId: UserProps = {
-      ...newUser,
-      id: users.length + 1 // ensures `id` is present
-    };
-    setUsers((prev) => [...prev, userWithId]);
-    setShowModal(false);
+ const handleAddUser = (newUser: Omit<UserData, 'id'>) => {
+  const userWithId: UserData = {
+    ...newUser,
+    id: Date.now(), // unique timestamp-based id
   };
+
+  setUsers([...users, userWithId]);
+  setIsModalOpen(false);
+};
 
   return (
     <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Users</h1>
-        <button
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-          onClick={() => setShowModal(true)}
-        >
-          Add User
-        </button>
-      </div>
+      <h1 className="text-2xl font-bold mb-4">Users</h1>
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Add User
+      </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {users.map((user) => (
-          <UserCard key={user.id} {...user} />
+          <UserCard
+            key={user.id}
+            id={user.id}
+            name={user.name}
+            username={user.username}
+            email={user.email}
+            address={user.address}
+            phone={user.phone}
+            website={user.website}
+            company={user.company}
+          />
         ))}
       </div>
 
-      {showModal && (
-        <UserModal onClose={() => setShowModal(false)} onSubmit={handleAddUser} />
-      )}
+      <UserModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleAddUser}
+      />
     </div>
   );
-}
+};
+
+export default UsersPage;

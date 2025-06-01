@@ -1,15 +1,16 @@
-// components/common/UserCard.tsx
-import { UserProps } from "@/interfaces";
+import { FC } from 'react';
+import { UserData } from '@/interfaces';
 
-const UserCard: React.FC<UserProps> = ({ name, email, phone, website, company, address }) => {
+const UserCard: FC<UserData> = ({ name, username, email, phone, website, address, company }) => {
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-md mx-auto my-4">
-      <h2 className="text-xl font-bold text-gray-800">{name}</h2>
-      <p className="text-gray-600">{email}</p>
-      <p className="text-gray-600">{phone}</p>
-      <p className="text-gray-600">{website}</p>
-      <p className="text-gray-600">Company: {company.name}</p>
-      <p className="text-gray-600">City: {address.city}</p>
+    <div className="border rounded p-4 shadow-md">
+      <h2 className="text-lg font-bold">{name}</h2>
+      <p><strong>Username:</strong> {username}</p>
+      <p><strong>Email:</strong> {email}</p>
+      <p><strong>Phone:</strong> {phone}</p>
+      <p><strong>Website:</strong> {website}</p>
+      <p><strong>Address:</strong> {address.street}, {address.city}</p>
+      <p><strong>Company:</strong> {company.name}</p>
     </div>
   );
 };
