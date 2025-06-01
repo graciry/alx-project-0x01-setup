@@ -1,33 +1,44 @@
-// pages/posts/index.tsx
 import PostCard from "@/components/common/PostCard";
+import PostModal from "@/components/common/PostModal";
 import Header from "@/components/layout/Header";
-import { PostProps } from "@/interfaces";
+import { PostData, PostProps } from "@/interfaces";
+import { useState } from "react";
 
-interface PostsPageProps {
+interface PostsProps {
   posts: PostProps[];
 }
 
-const Posts: React.FC<PostsPageProps> = ({ posts }) => {
+const Posts: React.FC<PostsProps> = ({ posts }) => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [postList, setPostList] = useState<PostProps[]>(posts);
+
+  const handleAddPost = (newPost: PostData) => {
+    setPostList([...postList, { ...newPost, id: postList.length + 1 }]);
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <Header />
       <main className="p-4">
         <div className="flex justify-between">
           <h1 className="text-2xl font-semibold">Post Content</h1>
-          <button className="bg-blue-700 px-4 py-2 rounded-full text-white">Add Post</button>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="bg-blue-700 px-4 py-2 rounded-full text-white"
+          >
+            Add Post
+          </button>
         </div>
-        <div className="grid grid-cols-3 gap-2">
-          {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              title={post.title}
-              body={post.body}
-              userId={post.userId}
-              id={post.id}
-            />
+        <div className="grid grid-cols-3 gap-2 mt-4">
+          {postList.map(({ title, body, userId, id }: PostProps, key: number) => (
+            <PostCard title={title} body={body} userId={userId} id={id} key={key} />
           ))}
         </div>
       </main>
+
+      {isModalOpen && (
+        <PostModal onClose={() => setModalOpen(false)} onSubmit={handleAddPost} />
+      )}
     </div>
   );
 };
